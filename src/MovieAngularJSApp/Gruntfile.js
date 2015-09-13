@@ -2,10 +2,19 @@
 module.exports = function (grunt) {
     // load Grunt plugins from NPM
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // configure plugins
     grunt.initConfig({
+        copy: {
+            files: {
+                cwd: '',
+                src: ['Scripts/**/*.js', 'Scripts/**/*.css', 'Views/**/*.html'],
+                dest: 'wwwroot',
+                expand: true
+            }
+        },
         uglify: {
             options: {
                 compress: {
@@ -19,12 +28,12 @@ module.exports = function (grunt) {
 
         watch: {
             scripts: {
-                files: ['Scripts/**/*.js'],
-                tasks: ['uglify']
+                files: ['Scripts/**/*.js', 'Views/**/*.html'],
+                tasks: ['copy']
             }
         }
     });
 
     // define tasks
-    grunt.registerTask('default', ['uglify', 'watch']);
+    grunt.registerTask('default', ['copy', 'watch']);
 };
