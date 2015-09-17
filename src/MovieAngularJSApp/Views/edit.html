@@ -4,11 +4,11 @@
     <div class="col-md-5">
 
         <form name="formEdit" novalidate ng-submit="edit()">
-
-            <ng-include src="'/Views/_edit.html'"></ng-include>
+            
+			<ng-include src="'/partials/_edit.html'"></ng-include>
 
             <a href="/" class="btn btn-default">Cancel</a>
-            <button type="submit" ng-disabled="formAdd.$invalid" class="btn btn-primary">Save</button>
+			<button type="submit" ng-disabled="formAdd.$invalid" class="btn btn-primary">Save</button>
         </form>
 
 
