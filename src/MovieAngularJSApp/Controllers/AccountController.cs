@@ -38,7 +38,7 @@ namespace MovieAngularJSApp.Controllers
 
 		public IActionResult SignOut()
 		{
-			_signInManager.SignOut();
+			_signInManager.SignOutAsync();
 			return Redirect("/home");
 		}
 

@@ -14,21 +14,24 @@ using Microsoft.AspNet.Routing;
 using Microsoft.Framework.Runtime;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity.Relational;
+using Swashbuckle.Swagger;
+using MovieAngularJSApp.Swagger;
 
 namespace MovieAngularJSApp
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
+        public Startup(IHostingEnvironment env)
         {
             // Setup configuration sources.
-
+            /*
             var builder = new ConfigurationBuilder(appEnv.ApplicationBasePath)
                 .AddJsonFile("config.json")
                 .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            */
         }
 
         public IConfiguration Configuration { get; set; }
@@ -40,7 +43,7 @@ namespace MovieAngularJSApp
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<MoviesAppContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+                    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MoviesDatabase;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             // add ASP.NET Identity
             services.AddIdentity<ApplicationUser, IdentityRole>() //Configuration)
@@ -50,9 +53,27 @@ namespace MovieAngularJSApp
 
             // add ASP.NET MVC
             services.AddMvc();
+
+            services.AddSwagger();
+            services.ConfigureSwaggerDocument(options =>
+            {
+                options.SingleApiVersion(new Info
+                {
+                    Version = "v2",
+                    Title = "Swashbuckle Sample API",
+                    Description = "A sample API for testing Swashbuckle",
+                    TermsOfService = "Some terms ..."
+                });
+
+                options.OperationFilter<AssignOperationVendorExtensions>();
+            });
+            services.ConfigureSwaggerSchema(options =>
+            {
+                options.DescribeAllEnumsAsStrings = true;
+            });
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseIdentity();
 
@@ -68,6 +89,11 @@ namespace MovieAngularJSApp
                 // Uncomment the following line to add a route for porting Web API 2 controllers.
                 // routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
             });
+
+            // Configure the HTTP request pipeline.
+            app.UseStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUi();
         }
 
 
@@ -75,14 +101,11 @@ namespace MovieAngularJSApp
         {
             using (var dbContext = applicationServices.GetService<MoviesAppContext>())
             {
-                var sqlServerDatabase = dbContext.Database as RelationalDatabase;
+                var sqlServerDatabase = dbContext.Database; // as  as SqlServerDatabase;
                 if (sqlServerDatabase != null)
                 {
                     // Create database in user root (c:\users\your name)
-                    if (sqlServerDatabase != null)
-                    {
-                        sqlServerDatabase.EnsureCreatedAsync().Wait();
-                    }
+                    sqlServerDatabase.EnsureCreatedAsync().Wait();
                     // add some movies
                     var movies = new List<Movie>
                     {
@@ -114,9 +137,6 @@ namespace MovieAngularJSApp
                 }
             }
         }
-
-
-
     }
 }
 

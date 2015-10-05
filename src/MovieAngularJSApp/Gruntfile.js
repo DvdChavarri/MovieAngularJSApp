@@ -10,7 +10,7 @@ module.exports = function (grunt) {
         copy: {
             files: {
                 cwd: '',
-                src: ['Scripts/**/*.js', 'Scripts/**/*.css', 'Views/**/*.html', 'Content/**/*.*'],
+                src: ['Scripts/**/*.js', 'Scripts/**/*.css', 'Views/**/*.html'],
                 dest: 'wwwroot',
                 expand: true
             }
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
 
         watch: {
             scripts: {
-                files: ['Scripts/**/*.js', 'Views/**/*.html', 'Content/**/*.*'],
+                files: ['Scripts/**/*.js', 'Views/**/*.html'],
                 tasks: ['copy']
             }
         }
