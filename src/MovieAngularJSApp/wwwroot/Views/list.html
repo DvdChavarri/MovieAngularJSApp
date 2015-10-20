@@ -1,5 +1,6 @@
 ﻿<div>
     <h1>List Movies</h1>
+    Filter: <input type="text" placeholder="Search" ng-model="movieSearch.Title">
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -9,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="movie in movies">
+            <tr ng-repeat="movie in movies | filter: movieSearch">
                 <td ng-show="canEdit">
                     <a href="/movies/edit/{{movie.Id}}" class="btn btn-default btn-xs">edit</a>
                     <a href="/movies/delete/{{movie.Id}}" class="btn btn-danger btn-xs">delete</a>
@@ -19,8 +20,9 @@
             </tr>
         </tbody>
     </table>
-
     <p ng-show="canEdit">
         <a href="/movies/add" class="btn btn-primary">Add New Movie</a>
     </p>
+
+    
 </div>

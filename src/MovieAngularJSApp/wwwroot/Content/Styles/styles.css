@@ -1,4 +1,8 @@
 ﻿
+body{
+    padding-top: 50px;
+}
+
 input.ng-invalid.ng-touched {
     background-color: #FA787E;
 }
