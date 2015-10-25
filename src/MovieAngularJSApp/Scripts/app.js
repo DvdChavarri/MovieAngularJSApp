@@ -9,7 +9,7 @@
 
     function config($routeProvider, $locationProvider) {
         $routeProvider
-            .when('/', {
+            .when('/', { 
               templateUrl: '/Views/list.html',
               controller: 'MoviesListController'
             })
