@@ -60,8 +60,8 @@ namespace MovieAngularJSApp
                 options.SingleApiVersion(new Info
                 {
                     Version = "v2",
-                    Title = "Swashbuckle Sample API",
-                    Description = "A sample API for testing Swashbuckle",
+                    Title = "MiFavoriteMovies Sample API",
+                    Description = "A sample API for testing MiFavoriteMovies",
                     TermsOfService = "Some terms ..."
                 });
 

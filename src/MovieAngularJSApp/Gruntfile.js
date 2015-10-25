@@ -1,16 +1,30 @@
-/// <binding AfterBuild='uglify' />
+/// <binding />
 module.exports = function (grunt) {
     // load Grunt plugins from NPM
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks("grunt-minified");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // configure plugins
     grunt.initConfig({
+        minified : {
+            files: {
+                src: [
+                'Scripts/**/*.js',
+                'Scripts/*.js'
+                ],
+                dest: 'wwwroot/'
+            },
+            options : {
+                allinone: true,
+                dest_filename: 'app.js'
+            }
+        },
         copy: {
             files: {
                 cwd: '',
-                src: ['Scripts/**/*.js', 'Scripts/**/*.css', 'Views/**/*.html'],
+                src: ['Views/**/*.html'],
                 dest: 'wwwroot',
                 expand: true
             }
@@ -29,11 +43,11 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['Scripts/**/*.js', 'Views/**/*.html'],
-                tasks: ['copy']
+                tasks: ['uglify', 'copy']
             }
         }
     });
 
     // define tasks
-    grunt.registerTask('default', ['copy', 'watch']);
+    grunt.registerTask('default', ['uglify', 'copy', 'watch']);
 };
